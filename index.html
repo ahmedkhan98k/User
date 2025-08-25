@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أداة تحويل مستخدمين تيك توك</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        h1 {
+            color: #ff0050;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 28px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .instructions {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-right: 4px solid #ff0050;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            line-height: 1.8;
+        }
+        
+        .instructions h3 {
+            color: #ff0050;
+            margin-bottom: 10px;
+        }
+        
+        .instructions ol {
+            padding-right: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+        }
+        
+        .upload-area {
+            border: 3px dashed #ccc;
+            padding: 40px 20px;
+            text-align: center;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: #fff8fa;
+        }
+        
+        .upload-area:hover {
+            border-color: #ff0050;
+            background-color: #ffeef2;
+        }
+        
+        .upload-area.dragover {
+            border-color: #ff0050;
+            background-color: #ffeef2;
+            transform: scale(1.02);
+        }
+        
+        .upload-area p {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 15px;
+        }
+        
+        .upload-area i {
+            font-size: 40px;
+            color: #ff0050;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            background-color: #ff0050;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s;
+            min-width: 160px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .btn:hover {
+            background-color: #e00046;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 0, 80, 0.3);
+        }
+        
+        .btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .btn i {
+            font-size: 18px;
+        }
+        
+        .result-area {
+            margin-top: 30px;
+        }
+        
+        .result-area h3 {
+            color: #ff0050;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            resize: vertical;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #ff0050;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .file-name {
+            margin-top: 15px;
+            font-style: italic;
+            color: #666;
+            text-align: center;
+        }
+        
+        .success-message {
+            color: #28a745;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f8fff9;
+            border-radius: 5px;
+            border-right: 4px solid #28a745;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .btn-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fab fa-tiktok"></i> أداة تحويل مستخدمين تيك توك</h1>
+        
+        <div class="instructions">
+            <h3><i class="fas fa-info-circle"></i> كيفية الاستخدام:</h3>
+            <ol>
+                <li>قم بتحميل ملف نصي يحتوي على أسماء المستخدمين (كل اسم في سطر منفصل)</li>
+                <li>سيتم تحويل كل اسم مستخدم إلى تنسيق "يوزر:باسورد"</li>
+                <li>يمكنك حفظ النتيجة كملف نصي جديد</li>
+            </ol>
+        </div>
+        
+        <div id="upload-area" class="upload-area">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p>انقر هنا أو اسحب ملف لإسقاطه هنا</p>
+            <input type="file" id="file-input" class="hidden" accept=".txt">
+            <p class="file-name" id="file-name"></p>
+        </div>
+        
+        <div class="btn-container">
+            <button id="process-btn" class="btn" disabled>
+                <i class="fas fa-cogs"></i> معالجة الملف
+            </button>
+            <button id="download-btn" class="btn" disabled>
+                <i class="fas fa-download"></i> حفظ النتيجة
+            </button>
+        </div>
+        
+        <div class="result-area">
+            <h3><i class="fas fa-result"></i> النتيجة:</h3>
+            <textarea id="result-text" placeholder="ستظهر النتيجة هنا بعد المعالجة" readonly></textarea>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInput = document.getElementById('file-input');
+            const uploadArea = document.getElementById('upload-area');
+            const fileName = document.getElementById('file-name');
+            const processBtn = document.getElementById('process-btn');
+            const downloadBtn = document.getElementById('download-btn');
+            const resultText = document.getElementById('result-text');
+            
+            let processedContent = '';
+            
+            // التعامل مع سحب وإسقاط الملفات
+            uploadArea.addEventListener('click', () => {
+                fileInput.click();
+            });
+            
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.classList.add('dragover');
+            });
+            
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.classList.remove('dragover');
+            });
+            
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                
+                if (e.dataTransfer.files.length) {
+                    fileInput.files = e.dataTransfer.files;
+                    handleFileSelection();
+                }
+            });
+            
+            fileInput.addEventListener('change', handleFileSelection);
+            
+            function handleFileSelection() {
+                if (fileInput.files.length) {
+                    const file = fileInput.files[0];
+                    
+                    // التأكد من أن الملف نصي
+                    if (!file.type.includes('text/') && !file.name.endsWith('.txt')) {
+                        alert('يرجى تحميل ملف نصي فقط (txt)');
+                        resetUI();
+                        return;
+                    }
+                    
+                    fileName.textContent = `الملف: ${file.name}`;
+                    processBtn.disabled = false;
+                }
+            }
+            
+            processBtn.addEventListener('click', processFile);
+            
+            function processFile() {
+                const file = fileInput.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const content = e.target.result;
+                    const lines = content.split(/\r?\n/);
+                    
+                    // معالجة كل سطر وتحويله إلى تنسيق يوزر:باسورد
+                    processedContent = lines
+                        .filter(line => line.trim() !== '') // تجاهل الأسطر الفارغة
+                        .map(username => {
+                            // إنشاء كلمة مرور عشوائية
+                            const password = generateRandomPassword(12);
+                            return `${username.trim()}:${password}`;
+                        })
+                        .join('\n');
+                    
+                    resultText.value = processedContent;
+                    downloadBtn.disabled = false;
+                    
+                    // إظهار رسالة نجاح
+                    const successMsg = document.createElement('div');
+                    successMsg.className = 'success-message';
+                    successMsg.innerHTML = '<i class="fas fa-check-circle"></i> تمت المعالجة بنجاح! يمكنك الآن حفظ النتيجة.';
+                    
+                    // إزالة أي رسالة سابقة
+                    const existingMsg = document.querySelector('.success-message');
+                    if (existingMsg) {
+                        existingMsg.remove();
+                    }
+                    
+                    uploadArea.parentNode.insertBefore(successMsg, uploadArea.nextSibling);
+                    
+                    // تمرير النتيجة إلى الأعلى
+                    resultText.scrollIntoView({ behavior: 'smooth' });
+                };
+                
+                reader.onerror = function() {
+                    alert('حدث خطأ أثناء قراءة الملف. يرجى المحاولة مرة أخرى.');
+                };
+                
+                reader.readAsText(file);
+            }
+            
+            downloadBtn.addEventListener('click', downloadResult);
+            
+            function downloadResult() {
+                if (!processedContent) return;
+                
+                const blob = new Blob([processedContent], { type: 'text/plain;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                
+                a.href = url;
+                a.download = 'tiktok_users_passwords.txt';
+                document.body.appendChild(a);
+                a.click();
+                
+                // التنظيف
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 100);
+            }
+            
+            function generateRandomPassword(length) {
+                const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
+                let password = "";
+                
+                for (let i = 0; i < length; i++) {
+                    const randomIndex = Math.floor(Math.random() * charset.length);
+                    password += charset[randomIndex];
+                }
+                
+                return password;
+            }
+            
+            function resetUI() {
+                fileInput.value = '';
+                fileName.textContent = '';
+                processBtn.disabled = true;
+                downloadBtn.disabled = true;
+                resultText.value = '';
+                processedContent = '';
+                
+                // إزالة رسالة النجاح إذا كانت موجودة
+                const successMsg = document.querySelector('.success-message');
+                if (successMsg) {
+                    successMsg.remove();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
